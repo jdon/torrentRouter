@@ -4,7 +4,8 @@ COPY . /Build
 RUN npm install
 RUN npm run build
 
-FROM node:12-alpine
+#Can't use alpine as fs.watch needs inotify
+FROM node:12-slim
 COPY --from=builder /Build/dist/. .
 COPY --from=builder /Build/package-lock.json .
 COPY --from=builder /Build/package.json .
