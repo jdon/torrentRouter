@@ -1,0 +1,36 @@
+{
+	"name": "torrent-sorter",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "tsc",
+		"start": "nodemon dist/main.js",
+		"watch": "npm run build -- --watch",
+		"test": "jest src/tests"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"bencode": "^2.0.1",
+		"chokidar": "^3.4.0",
+		"lodash": "^4.17.15"
+	},
+	"devDependencies": {
+		"dotenv": "^8.2.0",
+		"@types/bencode": "^2.0.0",
+		"@types/node": "^13.13.4",
+		"@typescript-eslint/eslint-plugin": "^2.29.0",
+		"eslint": "~6.8.0",
+		"eslint-config-airbnb-typescript": "^7.2.1",
+		"eslint-config-prettier": "~6.10.1",
+		"eslint-plugin-import": "^2.20.2",
+		"eslint-plugin-prettier": "~3.1.2",
+		"jest": "^25.1.0",
+		"nodemon": "^2.0.3",
+		"prettier": "^2.0.5",
+		"ts-jest": "^25.4.0",
+		"typescript": "^3.8.3"
+	}
+}
