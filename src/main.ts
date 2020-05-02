@@ -25,19 +25,21 @@ const processTorrent = (path: string, fileName: string, data: Buffer) => {
   }
 };
 
-chokidar.watch(filesToWatch, { awaitWriteFinish: true }).on('add', (path) => {
-  try {
-    const fileName = basename(path);
-    const data = readFileSync(path);
+chokidar
+  .watch(filesToWatch, { awaitWriteFinish: true, usePolling: true })
+  .on('add', (path) => {
     try {
-      processTorrent(path, fileName, data);
+      const fileName = basename(path);
+      const data = readFileSync(path);
+      try {
+        processTorrent(path, fileName, data);
+      } catch (error) {
+        console.error(`Unable to process file: ${path} - ${error}`);
+        const outPath = join(getDeadLetterDirectory(), fileName);
+        writeFileSync(outPath, data);
+      }
+      unlinkSync(path);
     } catch (error) {
-      console.error(`Unable to process file: ${path} - ${error}`);
-      const outPath = join(getDeadLetterDirectory(), fileName);
-      writeFileSync(outPath, data);
+      console.error(`Failed to process path: ${path} - ${error}`);
     }
-    unlinkSync(path);
-  } catch (error) {
-    console.error(`Failed to process path: ${path} - ${error}`);
-  }
-});
+  });
