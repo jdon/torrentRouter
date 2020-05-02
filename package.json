@@ -6,7 +6,7 @@
 	"scripts": {
 		"build": "tsc",
 		"ci": "npm ci --only=production",
-		"startdev": "nodemon -r dotenv/config dist/main.js dotenv_config_path=.env",
+		"startDev": "nodemon -r dotenv/config dist/main.js dotenv_config_path=.env",
 		"startProd": "node dist/main.js",
 		"watch": "npm run build -- --watch",
 		"test": "jest src/tests"

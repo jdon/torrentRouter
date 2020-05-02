@@ -1,7 +1,7 @@
 import * as bencode from 'bencode';
 import * as chokidar from 'chokidar';
 import { parse as parseURL } from 'url';
-import { readFileSync, writeFileSync } from 'fs';
+import { readFileSync, writeFileSync, unlinkSync } from 'fs';
 import { basename, join } from 'path';
 import { getWatchDirectory, getDeadLetterDirectory, getConfig } from './config';
 
@@ -26,14 +26,18 @@ const processTorrent = (path: string, fileName: string, data: Buffer) => {
 };
 
 chokidar.watch(filesToWatch, { awaitWriteFinish: true }).on('add', (path) => {
-  const fileName = basename(path);
-  const data = readFileSync(path);
   try {
-    processTorrent(path, fileName, data);
+    const fileName = basename(path);
+    const data = readFileSync(path);
+    try {
+      processTorrent(path, fileName, data);
+    } catch (error) {
+      console.error(`Unable to process file: ${path} - ${error}`);
+      const outPath = join(getDeadLetterDirectory(), fileName);
+      writeFileSync(outPath, data);
+    }
+    unlinkSync(path);
   } catch (error) {
-    console.error(`Unable to process file: ${path} - ${error}`);
-    const outPath = join(getDeadLetterDirectory(), fileName);
-    writeFileSync(outPath, data);
+    console.error(`Failed to process path: ${path} - ${error}`);
   }
-  // unlinkSync(path);
 });
