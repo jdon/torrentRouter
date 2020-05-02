@@ -5,7 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "tsc",
-		"start": "nodemon dist/main.js",
+		"ci": "npm ci --only=production",
+		"startdev": "nodemon -r dotenv/config dist/main.js dotenv_config_path=.env",
+		"startProd": "node dist/main.js",
 		"watch": "npm run build -- --watch",
 		"test": "jest src/tests"
 	},
@@ -14,12 +16,10 @@
 	"license": "ISC",
 	"dependencies": {
 		"bencode": "^2.0.1",
-		"chokidar": "^3.4.0",
-		"lodash": "^4.17.15"
+		"chokidar": "^3.4.0"
 	},
 	"devDependencies": {
 		"dotenv": "^8.2.0",
-		"@types/bencode": "^2.0.0",
 		"@types/node": "^13.13.4",
 		"@typescript-eslint/eslint-plugin": "^2.29.0",
 		"eslint": "~6.8.0",

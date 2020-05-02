@@ -3,11 +3,7 @@ import * as chokidar from 'chokidar';
 import { parse as parseURL } from 'url';
 import { readFileSync, writeFileSync } from 'fs';
 import { basename, join } from 'path';
-import {
-  getWatchDirectory,
-  getDeadLetterDirectory,
-  getOutDirectory,
-} from './config';
+import { getWatchDirectory, getDeadLetterDirectory, getConfig } from './config';
 
 const filesToWatch = `${getWatchDirectory()}/**.torrent`;
 console.log(`Watching: ${filesToWatch}`);
@@ -20,7 +16,7 @@ const processTorrent = (path: string, fileName: string, data: Buffer) => {
   if (decoded.announce) {
     const { announce } = decoded;
     const configName = generateConfigName(announce);
-    const outDir = getOutDirectory(configName);
+    const outDir = getConfig(configName);
     const outPath = join(outDir, fileName);
     writeFileSync(outPath, data);
     console.info(
