@@ -14,7 +14,7 @@ on:
   pull_request:
 
 env:
-  IMAGE_NAME: torrentRouter
+  IMAGE_NAME: torrentrouter
 
 jobs:
   # Run tests.
