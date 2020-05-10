@@ -27,7 +27,7 @@ jobs:
 
       - name: Run tests
         run: |
-          chmod +x ./scripts/dockerTestdockerTest.sh
+          chmod +x ./scripts/dockerTest.sh
           sh ./scripts/dockerTest.sh
 
   # Push image to GitHub Packages.
