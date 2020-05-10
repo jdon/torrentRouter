@@ -3,7 +3,7 @@
 
 set -xe
 
-LAUNCH_COMMAND=$(cat runTest.sh)
+LAUNCH_COMMAND=$(cat ./scripts/runTest.sh)
 
 docker run \
 --rm \
