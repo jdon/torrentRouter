@@ -1,8 +1,8 @@
-node_modules
-dist
-.npmrc
 .env
 .npm/
 .vscode/settings.json
-coverage
 testingDirectory
+
+#Added by cargo
+
+/target
