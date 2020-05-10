@@ -19,5 +19,5 @@ https://hub.docker.com/r/jdon278/torrent-router
 Example docker run command:
 
 ```
-docker run -d --name='torrentRouter' --net='none' -e 'WATCH_DIR'='watch' -e 'DEAD_LETTER_DIR'='dead' -e 'TORRENT_UBUNTU_COM'='TORRENT_UBUNTU_COM' -v './testingDirectory/watch':'/watch' -v './testingDirectory/deadLetter':'/dead' -v './testingDirectory/tv/UBUNTU/':'/TORRENT_UBUNTU_COM' 'jdon278/torrent-router'
+docker run -d --name=torrentRouter --net=none -e WATCH_DIR=/watch -e DEAD_LETTER_DIR=/dead -e TORRENT_UBUNTU_COM=/TORRENT_UBUNTU_COM -v ./torrentRouter/testingDirectory/watch:/watch -v ./torrentRouter/testingDirectory/deadLetter:/dead -v ./torrentRouter/testingDirectory/UBUNTU/:/TORRENT_UBUNTU_COM jdon278/torrent-router
 ```

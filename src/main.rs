@@ -50,7 +50,7 @@ fn watch() -> notify::Result<()> {
 	// Automatically select the best implementation for your platform.
 	// You can also access each implementation directly e.g. INotifyWatcher.
 	let mut watcher: PollWatcher = PollWatcher::new(tx, Duration::from_secs(2))?;
-
+	println!("Watching: {}", &watch_directory);
 	// Add a path to be watched. All files and directories at that path and
 	// below will be monitored for changes.
 	watcher.watch(watch_directory, RecursiveMode::NonRecursive)?;
@@ -59,8 +59,8 @@ fn watch() -> notify::Result<()> {
 	// for example to handle I/O.
 	loop {
 		match rx.recv() {
-			Ok(event) => {
-				if let DebouncedEvent::Create(file_path) = event {
+			Ok(event) => match event {
+				DebouncedEvent::Create(file_path) => {
 					if let Some(extension) = file_path.extension() {
 						if extension == "torrent" {
 							if let Some(file_name) = file_path.file_name() {
@@ -80,9 +80,9 @@ fn watch() -> notify::Result<()> {
 													handle_failure(
 														&file_path,
 														format!(
-														"Failed to get environment variable: {:?}",
-														env_value
-													),
+															"Failed to get environment variable: {:?}",
+															env_value
+														),
 													);
 													let dead_letter_file_path =
 														Path::new(&dead_letter_directory)
@@ -126,7 +126,11 @@ fn watch() -> notify::Result<()> {
 						}
 					}
 				}
-			}
+				DebouncedEvent::Error(error, path) => {
+					eprintln!("Failed when watching path: {:?}. Error: {}", path, error)
+				}
+				_ => (),
+			},
 			Err(e) => println!("Watch error: {:?}", e),
 		}
 	}
