@@ -52,7 +52,7 @@ mod tests {
 	#[test]
 	fn should_get_dead_letter_directory() {
 		env::set_var("DEAD_LETTER_DIR", "ENV_VALUE");
-		assert_eq!(get_dead_letter_directory(), "ENV_VALE");
+		assert_eq!(get_dead_letter_directory(), "ENV_VALUE");
 	}
 	#[test]
 	fn should_get_valid_required_config() {
