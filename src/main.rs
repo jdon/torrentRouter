@@ -46,7 +46,6 @@ fn get_file_name(file_path: &std::path::PathBuf) -> Option<&std::ffi::OsStr> {
 fn handle_create_event(
 	file_path: &std::path::PathBuf,
 	file_name: &std::ffi::OsStr,
-	dead_letter_file_path: &std::path::PathBuf,
 ) -> Result<(), Box<dyn error::Error>> {
 	let torrent = Torrent::read_from_file(&file_path)?;
 	let announce = torrent
@@ -59,13 +58,8 @@ fn handle_create_event(
 	let env_value = domain.to_uppercase().replace('.', "_");
 	let folder_dir = config::get_config(&env_value)?;
 	let tracker_file_path = Path::new(&folder_dir).join(&file_name);
-	match copy_file(&file_path, &tracker_file_path) {
-		Ok(()) => Ok(()),
-		Err(_) => {
-			copy_file(&file_path, &dead_letter_file_path)?;
-			Ok(())
-		}
-	}
+	copy_file(&file_path, &tracker_file_path)?;
+	Ok(())
 }
 
 fn watch() -> notify::Result<()> {
@@ -93,11 +87,7 @@ fn watch() -> notify::Result<()> {
 						Some(file_name) => {
 							let dead_letter_file_path =
 								Path::new(&dead_letter_directory).join(&file_name);
-							match handle_create_event(
-								&file_path,
-								&file_name,
-								&dead_letter_file_path,
-							) {
+							match handle_create_event(&file_path, &file_name) {
 								Ok(()) => println!("Successfully processed file: {:?}", &file_path),
 								Err(e) => {
 									handle_failure(
