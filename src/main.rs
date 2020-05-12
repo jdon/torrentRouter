@@ -5,9 +5,7 @@ use lava_torrent::torrent::v1::Torrent;
 use notify::{DebouncedEvent, PollWatcher, RecursiveMode, Watcher};
 
 use std::error;
-use std::fmt;
 use std::fs;
-use std::io::{Error, ErrorKind};
 use std::path::Path;
 use std::sync::mpsc::channel;
 use std::time::Duration;
@@ -111,7 +109,7 @@ fn watch() -> notify::Result<()> {
 							}
 						}
 						None => {
-							handle_failure(&file_path, format!("IS not a torrent"));
+							handle_failure(&file_path, "Is not a torrent".to_owned());
 						}
 					}
 				}
