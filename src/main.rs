@@ -2,7 +2,7 @@ extern crate notify;
 
 mod config;
 use lava_torrent::torrent::v1::Torrent;
-use notify::{DebouncedEvent, PollWatcher, RecursiveMode, Watcher};
+use notify::{watcher, DebouncedEvent, RecursiveMode, Watcher};
 
 use std::error;
 use std::fs;
@@ -71,7 +71,7 @@ fn watch() -> notify::Result<()> {
 
 	// Automatically select the best implementation for your platform.
 	// You can also access each implementation directly e.g. INotifyWatcher.
-	let mut watcher: PollWatcher = PollWatcher::new(tx, Duration::from_secs(2))?;
+	let mut watcher = watcher(tx, Duration::from_secs(10))?;
 	println!("Watching: {}", &watch_directory);
 	// Add a path to be watched. All files and directories at that path and
 	// below will be monitored for changes.
